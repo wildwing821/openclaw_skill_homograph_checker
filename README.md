@@ -1,64 +1,76 @@
-README.md
-🛡️ Homograph Domain Checker (OpenClaw Skill)
-📖 Introduction / 簡介
-English:
-A security-focused Python skill designed for the OpenClaw ecosystem. It detects Homograph (IDN) Spoofing Attacks by analyzing domain scripts (e.g., distinguishing between a Latin 'a' and a Cyrillic 'а'). This tool serves as a critical defense layer before any web navigation or data fetching.
+Homograph Domain Checker
+Introduction
+In the digital realm, "visual similarity" is often a veil for impurity. This tool is a high-fidelity security utility designed to detect Internationalized Domain Name (IDN) Homograph attacks. It identifies malicious attempts where attackers mix different scripts (e.g., Cyrillic 'а' vs. Latin 'a') to deceive users.
 
-中文：
-這是一個為 OpenClaw 生態系統設計的安全性 Python 技能。它透過分析網域字元集（例如區分拉丁字母 'a' 與西里爾字母 'а'）來偵測 同形異義字（IDN）欺騙攻擊。在進行任何網頁導航或資料抓取前，此工具可作為關鍵的防禦層。
+Core Principles
+This project adheres to strict software engineering standards:
 
-✨ Features / 功能亮點
-Punycode Conversion: Automatically decodes and exposes the true address of masked domains.
+Layered Architecture: Clear separation between Configuration, Interfaces, and Business Logic.
 
-Mixed Script Detection: Identifies if a domain uses multiple character sets (a primary indicator of phishing).
+Type Safety: Full implementation of Python Type Hints and Pydantic for robust data validation.
 
-Risk Assessment: Categorizes domains into HIGH or LOW risk based on script entropy.
+Dependency Inversion: High-level logic depends on abstractions (IDomainAnalyzer), not low-level implementations.
 
-OpenClaw Ready: Pre-configured as a system skill for seamless LLM integration.
+Features
+Multi-Script Detection: Analyzes Unicode characters to identify script mixing (e.g., Latin, Cyrillic, Greek).
 
-🛠️ Installation / 安裝指南
-Prerequisites / 前置需求
-Python 3.9+
+Punycode Decoding: Automatically resolves xn-- prefixes to their true ASCII representation.
 
-pip package manager
+Risk Assessment: Categorizes domains as "HIGH" or "LOW" risk based on IDN status and script consistency.
 
-Setup / 安裝步驟
-Clone or Copy this folder into your OpenClaw workspace:
+Logging System: Structured logging instead of standard print statements for professional observability.
 
-Bash
-# Path inside OpenClaw environment
-mkdir -p /app/.openclaw/workspace/skills/homograph_checker/
-Install Dependencies / 安裝依賴項:
+Installation
+Ensure your environment is purified with the following dependencies:
 
 Bash
 pip install idna pydantic
-🚀 Usage / 使用說明
-Manual Execution / 手動執行
-You can test the detector manually via CLI:
-您可以透過命令列手動測試偵測器：
+Usage
+You can execute the checker directly to run the built-in test suite:
 
 Bash
-python3 /app/.openclaw/workspace/skills/homograph_checker/checker.py
-OpenClaw Integration / OpenClaw 整合
-When integrated as a skill, OpenClaw agents should follow these rules:
-當整合為系統技能時，OpenClaw 代理應遵守以下規範：
+python3 checker.py
+For integration as a skill:
 
-Trigger: Use this skill before any browser navigation or web_fetch.
+Location: /app/.openclaw/workspace/skills/homograph_checker/
 
-Logic: If risk_assessment is HIGH, stop the process and warn the user.
+Workflow: Use this skill before any browser navigation or web_fetch operations on suspicious URLs.
 
-觸發時機：在執行 browser 導航或 web_fetch 抓取前調用。
 
-邏輯處理：若 risk_assessment 回傳為 HIGH，必須立即停止並告知使用者。
+同形異義字網域檢查器 (Homograph Checker)
+簡介
+在數位世界中，「視覺相似」往往是汙穢（惡意攻擊）的偽裝。本工具是一款高精度的安全組件，專門用於偵測 IDN 同形異義字欺騙攻擊。它能精準識別攻擊者利用不同語系字元（如西里爾字母 'а' 與拉丁字母 'a'）所構建的釣魚網域。
 
-🏗️ Architecture / 技術架構
-Following the First Principles of clean code / 遵循潔淨程式碼之第一性原理：
+設計核心原則
+本專案嚴格遵守最高規格的工程規範，確保程式碼的純淨與可維護性：
 
-Domain-Driven Design: Separates Configuration, Interfaces, and Business Logic.
+分層架構：嚴格區分配置層 (Config)、介面層 (Interface) 與業務邏輯層 (Business Logic)。
 
-Strict Typing: Uses pydantic and typing for robust data validation.
+類型安全：全面導入 Python Type Hints，並使用 Pydantic 進行嚴格的資料模型驗證。
 
-Defensive Programming: Path dependency checks and error handling are built-in.
+依賴反轉 (DI)：核心邏輯依賴於抽象介面 IDomainAnalyzer，實踐低耦合設計。
 
-📜 License / 授權
-MIT License. Feel free to use and improve this shield.
+核心功能
+多語系腳本偵測：分析 Unicode 字元，識別是否存在跨語系混合（如 Latin 與 Cyrillic 混用）。
+
+Punycode 自動解析：自動將 xn-- 開頭的轉碼網域還原為真實地址。
+
+風險評估機制：根據 IDN 狀態與語系一致性，自動判定風險等級（HIGH/LOW）。
+
+專業日誌系統：捨棄 print()，採用標準 logging 模組，提升系統的可觀測性。
+
+安裝需求
+請確保您的執行環境已配置以下必要依賴：
+
+Bash
+pip install idna pydantic
+執行與整合
+直接執行腳本即可啟動內建的測試案例：
+
+Bash
+python3 checker.py
+作為 OpenClaw Skill 整合時：
+
+組件位置：/app/.openclaw/workspace/skills/homograph_checker/
+
+建議工作流：在進行任何 browser 瀏覽或 web_fetch 抓取可疑 URL 之前，必須先調用此工具進行審查。
