@@ -1,76 +1,126 @@
-Homograph Domain Checker
-Introduction
-In the digital realm, "visual similarity" is often a veil for impurity. This tool is a high-fidelity security utility designed to detect Internationalized Domain Name (IDN) Homograph attacks. It identifies malicious attempts where attackers mix different scripts (e.g., Cyrillic 'а' vs. Latin 'a') to deceive users.
+# Homograph Domain Checker Plugin
 
-Core Principles
-This project adheres to strict software engineering standards:
+In the digital realm, "visual similarity" is often a veil for impurity. This high-fidelity security utility is designed to detect Internationalized Domain Name (IDN) Homograph attacks, identifying malicious attempts where attackers mix different scripts (e.g., Cyrillic 'а' vs. Latin 'a') to deceive users.
 
-Layered Architecture: Clear separation between Configuration, Interfaces, and Business Logic.
+## Why Homograph Domain Checker?
 
-Type Safety: Full implementation of Python Type Hints and Pydantic for robust data validation.
+Visual deception is a primary vector for phishing. By analyzing the underlying Unicode script consistency, this tool acts as a "Purity Firewall," ensuring that your AI Agent can identify hidden threats before any browser interaction or data fetching occurs.
 
-Dependency Inversion: High-level logic depends on abstractions (IDomainAnalyzer), not low-level implementations.
+## Skill Marketplace (homograph_checker)
 
-Features
-Multi-Script Detection: Analyzes Unicode characters to identify script mixing (e.g., Latin, Cyrillic, Greek).
+This plugin provides a mandatory security checkpoint for any web-based workflow:
 
-Punycode Decoding: Automatically resolves xn-- prefixes to their true ASCII representation.
+| Skill Mode | Core Capability | Integration Workflow |
+| :--- | :--- | :--- |
+| **Analyze** | Detects mixed scripts, resolves Punycode, and performs high-precision risk assessment. | **Mandatory**: Must be invoked before `browser` navigation or `web_fetch` on suspicious URLs. |
 
-Risk Assessment: Categorizes domains as "HIGH" or "LOW" risk based on IDN status and script consistency.
+## Getting Started
 
-Logging System: Structured logging instead of standard print statements for professional observability.
+### Prerequisites
+Maintain a purified environment with the following dependencies:
+* **Libraries**: `idna`, `pydantic`.
+* **Architecture**: Python 3.x with support for `unicodedata`.
 
-Installation
-Ensure your environment is purified with the following dependencies:
-
-Bash
+### Installation & Usage
+```bash
+# 1. Install necessary components
 pip install idna pydantic
-Usage
-You can execute the checker directly to run the built-in test suite:
 
-Bash
-python3 checker.py
-For integration as a skill:
+# 2. Execute the built-in test suite to verify integrity
+python3 /app/.openclaw/workspace/skills/homograph_checker/checker.py
+```
 
-Location: /app/.openclaw/workspace/skills/homograph_checker/
+### Critical Integration Rule
+If the `risk_assessment` returns **'HIGH'**, the Agent is strictly prohibited from proceeding with the URL. The user must be notified immediately.
 
-Workflow: Use this skill before any browser navigation or web_fetch operations on suspicious URLs.
+## Project Structure
 
+The project strictly adheres to a layered architecture, ensuring the separation of concerns and logic purity:
 
-同形異義字網域檢查器 (Homograph Checker)
-簡介
-在數位世界中，「視覺相似」往往是汙穢（惡意攻擊）的偽裝。本工具是一款高精度的安全組件，專門用於偵測 IDN 同形異義字欺騙攻擊。它能精準識別攻擊者利用不同語系字元（如西里爾字母 'а' 與拉丁字母 'a'）所構建的釣魚網域。
+```text
+homograph_checker/
+├── checker.py               # Core implementation (Config, Interface, Logic)
+├── SKILL.md                 # Metadata and Agent integration rules
+└── README.md                # Technical overview and design philosophy
+```
 
-設計核心原則
-本專案嚴格遵守最高規格的工程規範，確保程式碼的純淨與可維護性：
+## Core Engineering Philosophy
 
-分層架構：嚴格區分配置層 (Config)、介面層 (Interface) 與業務邏輯層 (Business Logic)。
+### 1. Layered Defense & Dependency Inversion
+* **Configuration Layer**: Uses `AppConfig (Pydantic)` for type-safe environment management.
+* **Interface Layer**: Defines `IDomainAnalyzer (ABC)`, allowing the core logic to depend on abstractions rather than low-level implementations.
 
-類型安全：全面導入 Python Type Hints，並使用 Pydantic 進行嚴格的資料模型驗證。
+### 2. Type Safety & Contractual Purity
+* **Strict Typing**: Full implementation of Python Type Hints and Pydantic for data validation.
+* **Zero Magic Numbers**: Risk levels and script permissions are managed through structured domain models.
 
-依賴反轉 (DI)：核心邏輯依賴於抽象介面 IDomainAnalyzer，實踐低耦合設計。
+### 3. Professional Observability
+* **Forbidden `print()`**: The business logic utilizes `logging` with configurable levels (e.g., `INFO`) instead of standard print statements for professional system auditing.
 
-核心功能
-多語系腳本偵測：分析 Unicode 字元，識別是否存在跨語系混合（如 Latin 與 Cyrillic 混用）。
+### 4. Defensive Initialization (Path Dependency)
+* While the current logic focuses on computation, the deployment follows the **Path Dependency Trap** protocol: always verify the skill's location at `/app/.openclaw/workspace/skills/homograph_checker/` before execution.
 
-Punycode 自動解析：自動將 xn-- 開頭的轉碼網域還原為真實地址。
+------------------------------------------------------------------------------------------------------------
 
-風險評估機制：根據 IDN 狀態與語系一致性，自動判定風險等級（HIGH/LOW）。
+# 同形異義字網域檢查器插件 (Homograph Domain Checker Plugin)
 
-專業日誌系統：捨棄 print()，採用標準 logging 模組，提升系統的可觀測性。
+在數位世界中，「視覺相似」往往是汙穢（惡意攻擊）的偽裝。本工具是一款高精度的安全防禦組件，專為偵測 IDN 同形異義字欺騙攻擊而設計。它能精準識別攻擊者利用不同語系字元（如西里爾字母 'а' 與拉丁字母 'a'）所構建的釣魚網域。
 
-安裝需求
-請確保您的執行環境已配置以下必要依賴：
+## 為什麼需要同形異義字檢查
 
-Bash
+視覺欺騙是網路釣魚的核心手段之一。透過分析底層的 Unicode 腳本一致性，本工具能建立一道「純淨防火牆」，確保您的 AI Agent 在執行瀏覽或抓取動作前，能先行穿透偽裝並識別潛在威脅。
+
+## 技能矩陣 (Skill Marketplace: homograph_checker)
+
+本插件為所有涉及網路存取的工作流提供強制性的安全審查節點：
+
+| 技能模式 | 核心能力 | 建議工作流 |
+| :--- | :--- | :--- |
+| **Analyze** | 執行多語系腳本偵測、Punycode 自動還原，並產出高精度的風險評估報告。 | **強制要求**：在透過 `browser` 導覽或對可疑 URL 執行 `web_fetch` 前必須調用。 |
+
+## 快速上手 (Getting Started)
+
+### 環境要求
+請確保您的執行環境已配置以下必要依賴，維持系統的純確性：
+* **核心套件**：`idna`, `pydantic`。
+* **架構環境**：支援 `unicodedata` 模組的 Python 3.x 環境。
+
+### 安裝與執行
+```bash
+# 1. 淨化環境並安裝必要組件
 pip install idna pydantic
-執行與整合
-直接執行腳本即可啟動內建的測試案例：
 
-Bash
-python3 checker.py
-作為 OpenClaw Skill 整合時：
+# 2. 執行內建測試案例以驗證系統穩定性
+python3 /app/.openclaw/workspace/skills/homograph_checker/checker.py
+```
 
-組件位置：/app/.openclaw/workspace/skills/homograph_checker/
+### 關鍵整合規則
+若風險評估結果回傳為 **'HIGH'**，系統嚴禁繼續存取該網址，且必須立即通知使用者。
 
-建議工作流：在進行任何 browser 瀏覽或 web_fetch 抓取可疑 URL 之前，必須先調用此工具進行審查。
+## 專案結構 (Project Structure)
+
+本插件嚴格遵守分層架構設計，確保各層邏輯完全解耦：
+
+```text
+homograph_checker/
+├── checker.py               # 核心實作（包含配置層、介面層與業務邏輯）
+├── SKILL.md                 # AI Agent 整合規範與元數據
+└── README.md                # 技術概覽與設計哲學
+```
+
+## 核心設計哲學
+
+### 1. 分層防禦與依賴反轉 (DIP)
+* **配置層**：使用 `AppConfig (Pydantic)` 進行強型別的環境參數管理。
+* **介面層**：定義 `IDomainAnalyzer (ABC)` 抽象類別，使核心邏輯依賴於抽象介面而非具體實作，提升系統擴充性。
+
+### 2. 類型安全與契約精神 (Type Safety)
+* **嚴格型別**：全面導入 Python Type Hints 與 Pydantic 模型進行資料驗證。
+* **拒絕魔法數字**：風險等級與許可腳本皆透過結構化的領域模型進行定義。
+
+### 3. 專業級可觀測性 (Observability)
+* **禁用 print()**：業務邏輯層採用標準 `logging` 模組，支援可配置的日誌等級（如 `INFO`），滿足專業系統審計需求。
+
+### 4. 防禦性啟動原則 (Path Dependency)
+* 部署與調用必須嚴格遵守 **「路徑依賴陷阱」** 審查，確保在執行前已確認 `/app/.openclaw/workspace/skills/homograph_checker/` 目錄的絕對存在。
+
